@@ -24,6 +24,7 @@ func main() {
 	// Verify that this is the command to connect to pollys server
 	conn, errc := net.Dial("tcp", "127.0.0.1:12000")
 	check(errc)
+	defer conn.Close()
 
 	// Prompt the user for upload file name
 	uploadFileName := ""
@@ -34,32 +35,33 @@ func main() {
 	file, errc := os.Open(uploadFileName)
 	check(errc)
 	defer file.Close()
+
 	// Calculate its file size
-	stat, errc := file.Stat()
-	check(errc)
+	stat, _ := file.Stat()
 	sizeBytes := stat.Size()
+	fmt.Printf("Send the file size first: %d\n", sizeBytes)
 
 	// Create a buffered writer to send the file size
 	writer := bufio.NewWriter(conn)
-	// Send the file size
 	_, errw := writer.WriteString(fmt.Sprintf("%d", sizeBytes))
 	check(errw)
 	writer.Flush()
 
-	// Read the file contents and send it to the server at once
+	// Read the file contents line by line and keep it as a string
+	fileContents := ""
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		_, errw := writer.WriteString(scanner.Text())
-		check(errw)
+		fileContents += scanner.Text()
 	}
+
+	// Send the file contents
+	_, errw = writer.WriteString(fileContents)
+	check(errw)
 	writer.Flush()
 
-	// Read the server response
-	scanner = bufio.NewScanner(conn)
-	if scanner.Scan() {
-		fmt.Println(scanner.Text())
+	// // Receive a message back from server
+	response := bufio.NewScanner(conn)
+	if response.Scan() {
+		fmt.Printf("Server replies: %s\n", response.Text())
 	}
-
-	// Close the connection and terminate the program
-	conn.Close()
 }
