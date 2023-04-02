@@ -9,33 +9,23 @@
 package main
 
 import (
-  "fmt"
-  "bufio"
-  "net"
+	"fmt"
+	"net"
 )
 
 // Function to check for errors, if not null, panic
-func check(e error)
-{
-  if e != nil
-  {
-	panic(e)
-  }
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
 
-func main()
-{
-  // Launch the server on local ip at port 12001
-  fmt.Println("Launching server... at port 12001")
-  ln, _ := net.Listen("tcp", ":12001")
-  conn, _ := ln.Accept()
-  def ln.Close()
-  def conn.Close()
-
-
-
-
-
-
+func main() {
+	// Launch the server on local ip at port 12001
+	fmt.Println("Launching server... at port 12001")
+	ln, _ := net.Listen("tcp", ":12001")
+	conn, _ := ln.Accept()
+	ln.Close()
+	conn.Close()
 
 }
