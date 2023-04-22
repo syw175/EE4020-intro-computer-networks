@@ -63,5 +63,4 @@ func main() {
 	writer.WriteString(fmt.Sprintf("Initial file size: %s", initialFileSize))
 	writer.WriteString(fmt.Sprintf("New file size: %d", newFileSize))
 
-
 }
