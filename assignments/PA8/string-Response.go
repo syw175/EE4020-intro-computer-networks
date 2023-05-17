@@ -14,7 +14,7 @@ func check(e error) {
 func main() {
   // Launch the server...
   fmt.Println("Launching server...")
-  ln, _ := net.Listen("tcp", ":<your port#>")
+  ln, _ := net.Listen("tcp", ":12001")
   defer ln.Close()
 
   // Accept incoming HTTP connections

@@ -5,6 +5,6 @@ import “net/http”
 
 func main() {
   fmt.Println("Launching server...")
-  http.ListenAndServe(":<your port#>", \
+  http.ListenAndServe(":12001", \
   http.FileServer(http.Dir(".")))
 }
